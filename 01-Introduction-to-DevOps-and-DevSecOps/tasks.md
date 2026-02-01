@@ -7,7 +7,7 @@ the goal is **clarity of thinking and real-world understanding**.
 
 ---
 
-## ✅ Task 1 – DevOps, DevSecOps & Why They Exist
+## Task 1 – DevOps, DevSecOps & Why They Exist
 
 ### Objective
 Understand **why DevOps and DevSecOps were introduced** and how they solve real corporate problems.
@@ -28,7 +28,7 @@ Understand **why DevOps and DevSecOps were introduced** and how they solve real 
 
 ---
 
-## ✅ Task 2 – How DevOps Works in Real Companies
+## Task 2 – How DevOps Works in Real Companies
 
 ### Objective
 Understand how DevOps operates **end-to-end in production environments**.
