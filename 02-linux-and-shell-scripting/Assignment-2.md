@@ -301,6 +301,202 @@ sudo chown :qa /opt/shared-data
 # Use numeric UID:GID
 sudo chown 1000:1000 /opt/shared-data/devops1.txt
 ```
+---
+
+## Task 4.5: `chmod` Deep Practice (Numeric + Symbolic + Real Scenarios)
+
+### Goal
+
+Gain complete control over file and directory permissions using `chmod` and understand how permission changes affect access in real situations.
+
+This task focuses **only on permissions**, not ownership.
+
+---
+
+### Step 1: Prepare Test Files and Directories
+
+```bash
+# Create a test directory for chmod practice
+mkdir chmod-lab
+cd chmod-lab
+
+# Create test files and directories
+touch file1.txt file2.txt
+mkdir dir1 dir2
+```
+
+---
+
+### Step 2: Understand Default Permissions
+
+```bash
+# List permissions of newly created files and directories
+ls -l
+ls -ld dir1
+```
+
+👉 Observe:
+
+* Files usually start with `rw-r--r--`
+* Directories usually start with `rwxr-xr-x`
+
+---
+
+### Step 3: `chmod` Using Numeric Mode
+
+```bash
+# Set file to rw-r--r--
+chmod 644 file1.txt
+ls -l file1.txt
+```
+
+```bash
+# Set file to rwx------
+chmod 700 file1.txt
+ls -l file1.txt
+```
+
+```bash
+# Set directory to rwxr-x---
+chmod 750 dir1
+ls -ld dir1
+```
+
+👉 Numeric reminder:
+
+* r = 4
+* w = 2
+* x = 1
+
+---
+
+### Step 4: `chmod` Using Symbolic Mode
+
+```bash
+# Add execute permission to owner only
+chmod u+x file2.txt
+ls -l file2.txt
+```
+
+```bash
+# Remove write permission from group and others
+chmod go-w file2.txt
+ls -l file2.txt
+```
+
+```bash
+# Give read permission to everyone
+chmod a+r file2.txt
+ls -l file2.txt
+```
+
+---
+
+### Step 5: Directory Permission Behavior (Critical)
+
+```bash
+# Remove execute permission from directory
+chmod 600 dir2
+ls -ld dir2
+```
+
+```bash
+# Try entering directory (should fail)
+cd dir2
+```
+
+👉 Expected: **Permission denied**
+
+```bash
+# Restore execute permission
+chmod 700 dir2
+cd dir2
+pwd
+cd ..
+```
+
+👉 Key learning:
+
+* Directory needs **x** to enter
+* Directory needs **r** to list
+* Directory needs **w** to create/delete files
+
+---
+
+### Step 6: Recursive Permission Changes
+
+```bash
+# Apply permissions recursively to directory and contents
+chmod -R 755 chmod-lab
+```
+
+```bash
+# Verify recursive change
+ls -l
+ls -ld dir1
+```
+
+---
+
+### Step 7: Permission Denied Simulation & Fix
+
+```bash
+# Remove all permissions for group and others
+chmod 700 file1.txt
+ls -l file1.txt
+```
+
+```bash
+# Switch to another user
+su - devops1
+cat ~/chmod-lab/file1.txt
+exit
+```
+
+👉 Expected: **Permission denied**
+
+```bash
+# Fix by allowing group read access
+chmod 740 file1.txt
+ls -l file1.txt
+```
+
+---
+
+### Step 8: Compare `chmod` vs `chown` (Important Concept)
+
+```bash
+# Change permissions only
+chmod 777 file2.txt
+ls -l file2.txt
+```
+
+👉 Permissions changed, **owner did not**
+
+```bash
+# Change ownership only
+sudo chown devops1 file2.txt
+ls -l file2.txt
+```
+
+👉 Owner changed, **permissions did not**
+
+---
+
+### Validation
+
+* Numeric and symbolic `chmod` both used
+* Permission denied error reproduced and fixed
+* Directory permission behavior understood
+* Recursive permission change verified
+* Difference between `chmod` and `chown` clearly observed
+
+---
+
+ **Important Rule for Students**
+
+> Never use `chmod 777` in production.
+> This task uses it **only to demonstrate behavior**.
 
 ---
 
